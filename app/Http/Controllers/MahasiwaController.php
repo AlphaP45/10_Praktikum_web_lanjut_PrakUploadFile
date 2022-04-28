@@ -17,20 +17,20 @@ class MahasiwaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-  
+
      public function index()
     {
         //yang semulanya Mahasiswa::all menjadi mahasiswa with yang menyatakan relasi
         $mahasiswa = Mahasiwa::with('kelas')->get();
-    
-        // fungsi latest berfungsi untuk menampilkan berdasarkan data terakhir di input    
+
+        // fungsi latest berfungsi untuk menampilkan berdasarkan data terakhir di input
         $post = Mahasiwa::latest();
         // search berdasarkan nama atau nim
         if (request('search')) {
             $post->where('nama', 'like', '%' . request('search') . '%')->orWhere('nim','like','%' . request('search').'%');
         }
 
-        //add pagination 
+        //add pagination
         return view('mahasiswa.index',[
             'mahasiswa' => $mahasiswa,
             'post' => $post -> paginate (5)
@@ -76,7 +76,7 @@ class MahasiwaController extends Controller
         //  $mahasiswa->alamat=$request->get('alamat');
         //  $mahasiswa->tanggal_lahir=$request->get('tanggal_lahir');
         //  $mahasiswa->save();
-        
+
         //  $kelas = new Kelas;
         //  $kelas->id=$request->get('kelas_id');
 
@@ -97,13 +97,13 @@ class MahasiwaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-  
+
 
 
      public function show( $id_mahasiswa)
     {
         //menampilkan detail data dengan menemukan/berdasarkan Nim Mahasiswa
-    
+
         $Mahasiswa = Mahasiwa::with('kelas')->where('id_mahasiswa',$id_mahasiswa)->first();
 
         return view('mahasiswa.detail', ['Mahasiswa' => $Mahasiswa]);
@@ -163,7 +163,7 @@ class MahasiwaController extends Controller
         //fungsi eloquent untuk menghapus data
         Mahasiwa::where('id_mahasiswa',$id_mahasiswa)->delete();
         return redirect()->route('mahasiswa.index')
-            -> with('success', 'Mahasiswa Berhasil Dihapus');  
+            -> with('success', 'Mahasiswa Berhasil Dihapus');
     }
     public function nilai($id_mahasiswa)
     {
